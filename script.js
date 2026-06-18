@@ -1,13 +1,14 @@
 const translations = {
   zh: {
     "meta.description":
-      "Cheng-Hsuan Chien 的個人網站，整理研究方向、專案、發表與聯絡資訊。",
+      "Terry Chien 的個人網站，整理研究方向、專案、教學筆記、發表與聯絡資訊。",
     "nav.home": "回到首頁",
     "nav.label": "主要導覽",
     "nav.about": "About",
     "nav.experience": "Experience",
     "nav.research": "Research",
     "nav.projects": "Projects",
+    "nav.tutorials": "Tutorials",
     "nav.publications": "Publications",
     "nav.contact": "Contact",
     "language.label": "語言切換",
@@ -43,6 +44,8 @@ const translations = {
     "research.wireless": "建立無線通訊系統模擬與分析，連結理論與實驗結果。",
     "projects.eyebrow": "Projects",
     "projects.title": "專案",
+    "tutorials.eyebrow": "Tutorials",
+    "tutorials.title": "教學筆記",
     "publications.eyebrow": "Publications",
     "publications.title": "論文與發表",
     "contact.eyebrow": "Contact",
@@ -50,17 +53,18 @@ const translations = {
     "contact.body":
       "歡迎透過 GitHub 聯絡我。正式上線前，可以再補上 email、CV 連結與其他社群連結。",
     "footer.text":
-      "Cheng-Hsuan Chien. 使用靜態 HTML、CSS 與 JavaScript 建置。",
+      "Terry Chien. 使用靜態 HTML、CSS 與 JavaScript 建置。",
   },
   en: {
     "meta.description":
-      "Personal website of Cheng-Hsuan Chien, featuring research interests, projects, publications, and contact information.",
+      "Personal website of Terry Chien, featuring research interests, projects, tutorials, publications, and contact information.",
     "nav.home": "Back to home",
     "nav.label": "Primary navigation",
     "nav.about": "About",
     "nav.experience": "Experience",
     "nav.research": "Research",
     "nav.projects": "Projects",
+    "nav.tutorials": "Tutorials",
     "nav.publications": "Publications",
     "nav.contact": "Contact",
     "language.label": "Language switcher",
@@ -99,6 +103,8 @@ const translations = {
       "Building wireless communication simulations and analysis that connect theory with experimental results.",
     "projects.eyebrow": "Projects",
     "projects.title": "Projects",
+    "tutorials.eyebrow": "Tutorials",
+    "tutorials.title": "Tutorials",
     "publications.eyebrow": "Publications",
     "publications.title": "Publications",
     "contact.eyebrow": "Contact",
@@ -106,7 +112,7 @@ const translations = {
     "contact.body":
       "Feel free to reach out through GitHub. Email, CV, and additional social links can be added before the site is finalized.",
     "footer.text":
-      "Cheng-Hsuan Chien. Built with static HTML, CSS, and JavaScript.",
+      "Terry Chien. Built with static HTML, CSS, and JavaScript.",
   },
 };
 
@@ -169,6 +175,51 @@ const publications = [
       { label: "DOI", href: "https://doi.org/10.1103/n9wg-k6q9" },
       { label: "arXiv", href: "https://arxiv.org/abs/2505.02702" },
     ],
+  },
+];
+
+const tutorials = [
+  {
+    title: {
+      zh: "Code simulations",
+      en: "Code simulations",
+    },
+    meta: {
+      zh: "Python / MATLAB / reproducible examples",
+      en: "Python / MATLAB / reproducible examples",
+    },
+    description: {
+      zh: "整理我關注的通訊、訊號處理與量子系統主題，搭配可重現的程式模擬與圖表。",
+      en: "Notes on communication, signal processing, and quantum-system topics with reproducible code simulations and figures.",
+    },
+  },
+  {
+    title: {
+      zh: "Mathematical derivations",
+      en: "Mathematical derivations",
+    },
+    meta: {
+      zh: "Models / proofs / intuition",
+      en: "Models / proofs / intuition",
+    },
+    description: {
+      zh: "放置模型建立、公式推導與直覺說明，讓研究筆記能從問題設定一路走到可計算形式。",
+      en: "Modeling notes, derivations, and intuition that connect problem setup to computable forms.",
+    },
+  },
+  {
+    title: {
+      zh: "Research reading notes",
+      en: "Research reading notes",
+    },
+    meta: {
+      zh: "Papers / implementation details / open questions",
+      en: "Papers / implementation details / open questions",
+    },
+    description: {
+      zh: "記錄論文閱讀、實作細節與還想追的問題，之後可逐步擴充成獨立文章。",
+      en: "Short notes on papers, implementation details, and open questions that can later grow into standalone articles.",
+    },
   },
 ];
 
@@ -341,6 +392,7 @@ function setLanguage(language) {
   localStorage.setItem("preferredLanguage", currentLanguage);
   translatePage();
   renderList("projectList", projects);
+  renderList("tutorialList", tutorials);
   renderList("publicationList", publications);
   drawSignalCanvas();
 }

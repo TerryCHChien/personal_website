@@ -5,21 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="Cheng-Hsuan Chien 的個人網站，整理研究方向、專案、發表與聯絡資訊。"
+      content="Terry Chien 的個人網站，整理研究方向、專案、教學筆記、發表與聯絡資訊。"
       data-i18n-attr="content:meta.description"
     >
-    <title>Cheng-Hsuan Chien | Personal Website</title>
+    <title>Terry Chien | Personal Website</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="回到首頁" data-i18n-attr="aria-label:nav.home">Cheng-Hsuan Chien</a>
+      <a class="brand" href="#top" aria-label="回到首頁" data-i18n-attr="aria-label:nav.home">Terry Chien</a>
       <div class="header-actions">
         <nav class="site-nav" aria-label="主要導覽" data-i18n-attr="aria-label:nav.label">
           <a href="#about" data-i18n="nav.about">About</a>
           <a href="#experience" data-i18n="nav.experience">Experience</a>
           <a href="#research" data-i18n="nav.research">Research</a>
           <a href="#projects" data-i18n="nav.projects">Projects</a>
+          <a href="#tutorials" data-i18n="nav.tutorials">Tutorials</a>
           <a href="#publications" data-i18n="nav.publications">Publications</a>
           <a href="#contact" data-i18n="nav.contact">Contact</a>
         </nav>
@@ -34,7 +35,7 @@
       <section class="hero section-band">
         <div class="hero-copy">
           <p class="eyebrow" data-i18n="hero.eyebrow">Personal academic portfolio</p>
-          <h1>Cheng-Hsuan Chien</h1>
+          <h1>Terry Chien</h1>
           <p class="hero-subtitle" data-i18n="hero.subtitle">
             Master's student in Communication Engineering and Signal Processing.
           </p>
@@ -138,7 +139,15 @@
         <div id="projectList" class="item-list" aria-live="polite"></div>
       </section>
 
-      <section id="publications" class="content-section section-band">
+      <section id="tutorials" class="content-section section-band">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="tutorials.eyebrow">Tutorials</p>
+          <h2 data-i18n="tutorials.title">教學筆記</h2>
+        </div>
+        <div id="tutorialList" class="item-list" aria-live="polite"></div>
+      </section>
+
+      <section id="publications" class="content-section">
         <div class="section-heading">
           <p class="eyebrow" data-i18n="publications.eyebrow">Publications</p>
           <h2 data-i18n="publications.title">論文與發表</h2>
@@ -163,7 +172,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>&copy; <span id="year"></span> <span data-i18n="footer.text">Cheng-Hsuan Chien. Built with static HTML, CSS, and JavaScript.</span></p>
+      <p>&copy; <span id="year"></span> <span data-i18n="footer.text">Terry Chien. Built with static HTML, CSS, and JavaScript.</span></p>
     </footer>
 
     <script src="script.js"></script>

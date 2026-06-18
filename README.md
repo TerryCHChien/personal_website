@@ -31,6 +31,7 @@ http://localhost:8080
 
 - 在 `index.html` 修改姓名、About、Experience、Research、Contact 文字。
 - 在 `script.js` 的 `projects` 陣列修改專案卡片。
+- 在 `script.js` 的 `tutorials` 陣列修改教學筆記卡片。
 - 在 `script.js` 的 `publications` 陣列修改論文與發表。
 - 中英文切換文字主要在 `script.js` 的 `translations` 物件裡修改。
 - 如果要公開 email，可以在 `index.html` 的 Contact 區塊加入 `mailto:` 連結。
