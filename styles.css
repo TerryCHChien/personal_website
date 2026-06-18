@@ -408,6 +408,7 @@ h3 {
 
 .item-card-link {
   color: inherit;
+  cursor: pointer;
   transition:
     border-color 160ms ease,
     box-shadow 160ms ease,

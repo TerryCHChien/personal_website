@@ -11,6 +11,7 @@
 - `data/site-data.json`：網站實際使用的資料；本機 editor 會修改這個檔案
 - `tools/site_editor.py`：本機網站管理 GUI
 - `tutorials/`：教學筆記與文章頁面
+- `projects/`：專案頁面
 - `assets/`：之後放 code、圖片、公式等可被頁面 include 的檔案
 - `codex可以讀的說明`：網站建置方向與給 Codex 的需求說明
 
@@ -43,8 +44,10 @@ http://localhost:8099/editor
 目前 GUI 支援：
 
 - 查看網站結構
+- 新增/刪除 project 頁面
+- 編輯 project 首頁卡片文字、內頁連結與 GitHub 連結
 - 新增 tutorial 頁面
-- 編輯 tutorial 首頁卡片文字與連結
+- 編輯 tutorial 首頁卡片文字、內頁連結與 GitHub 連結
 - 刪除 tutorial 頁面
 - 上傳 PDF、code、圖片、公式素材、下載包
 - 刪除已上傳素材
@@ -60,6 +63,7 @@ http://localhost:8099/editor
 - 在 GUI 裡修改 tutorial 是最簡單的方式。
 - 如果手動改資料，請改 `data/site-data.json`。
 - `projects`、`tutorials`、`publications`、`translations` 都在 `data/site-data.json`。
+- 新增 project 頁面時，建議放在 `projects/`，並在 `data/site-data.json` 的 `projects` 陣列加入連結。
 - 新增 tutorial 頁面時，建議放在 `tutorials/`，並在 `data/site-data.json` 的 `tutorials` 陣列加入連結。
 - 可以從 `tutorials/_template.html` 複製一份，作為新 tutorial 頁面的固定模板。
 - code、圖片、PDF、下載包、公式等素材可分別放在 `assets/code/`、`assets/images/`、`assets/pdfs/`、`assets/downloads/`、`assets/formulas/`。
@@ -162,3 +166,5 @@ assets/pdfs/my-note.pdf
 ```html
 <iframe class="pdf-frame" src="../assets/pdfs/my-note.pdf" title="PDF preview"></iframe>
 ```
+
+Project 頁面也使用同樣邏輯。可以從 `projects/_template.html` 複製，或直接用 `make editor` 在 GUI 裡新增。Project / Tutorial 卡片都支援可選的 GitHub 連結；沒有填 GitHub 也可以正常顯示。

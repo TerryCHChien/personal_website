@@ -10,6 +10,7 @@ import re
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "site-data.json"
 TUTORIAL_DIR = ROOT / "tutorials"
+PROJECT_DIR = ROOT / "projects"
 ASSET_DIRS = {
     "code": ROOT / "assets" / "code",
     "downloads": ROOT / "assets" / "downloads",
@@ -41,12 +42,23 @@ def write_json(data):
     DATA_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def tutorial_template(title, meta, body):
+def page_template(title, meta, body, kind, github=""):
     escaped_title = html.escape(title)
     escaped_meta = html.escape(meta)
+    escaped_kind = html.escape(kind.title())
+    back_target = "projects" if kind == "project" else "tutorials"
+    back_label = f"Back to {back_target}"
     body_html = "".join(f"<p>{html.escape(paragraph)}</p>\n" for paragraph in body.split("\n\n") if paragraph.strip())
     if not body_html:
-        body_html = "<p>Write your tutorial text here.</p>\n"
+        body_html = f"<p>Write your {kind} text here.</p>\n"
+    github_card = ""
+    if github:
+        escaped_github = html.escape(github, quote=True)
+        github_card = f"""
+            <a class="resource-card" href="{escaped_github}" target="_blank" rel="noreferrer">
+              <strong>GitHub</strong>
+              <span>Repository link</span>
+            </a>"""
 
     return f"""<!doctype html>
 <html lang="zh-Hant">
@@ -58,13 +70,13 @@ def tutorial_template(title, meta, body):
   </head>
   <body>
     <main class="article-shell">
-      <nav class="article-nav" aria-label="Tutorial navigation">
-        <a href="../index.html#tutorials">Back to tutorials</a>
+      <nav class="article-nav" aria-label="{escaped_kind} navigation">
+        <a href="../index.html#{back_target}">{back_label}</a>
         <a href="../index.html">Home</a>
       </nav>
 
       <header class="article-header">
-        <p class="eyebrow">Tutorial</p>
+        <p class="eyebrow">{escaped_kind}</p>
         <h1>{escaped_title}</h1>
         <p class="article-meta">{escaped_meta}</p>
       </header>
@@ -84,6 +96,7 @@ def tutorial_template(title, meta, body):
         <section>
           <h2>Downloads</h2>
           <div class="resource-grid">
+            {github_card}
             <a class="resource-card" href="../assets/pdfs/example.pdf" download>
               <strong>Download PDF</strong>
               <span>Derivation or lecture note</span>
@@ -249,13 +262,50 @@ EDITOR_HTML = r"""<!doctype html>
       <aside>
         <h2>Structure</h2>
         <div class="tree">
+          <button data-tab="projects">Project pages</button>
           <button data-tab="tutorials">Tutorial pages</button>
           <button data-tab="assets">Assets</button>
           <button data-tab="data">Raw site data</button>
         </div>
       </aside>
       <section>
-        <div id="tutorialsTab">
+        <div id="projectsTab">
+          <div class="panel">
+            <h2>Project Pages</h2>
+            <label>
+              Select a project
+              <select id="projectSelect"></select>
+            </label>
+            <div class="grid">
+              <label>Title zh <input id="projectTitleZh"></label>
+              <label>Title en <input id="projectTitleEn"></label>
+              <label>Meta zh <input id="projectMetaZh"></label>
+              <label>Meta en <input id="projectMetaEn"></label>
+            </div>
+            <label>Description zh <textarea id="projectDescZh"></textarea></label>
+            <label>Description en <textarea id="projectDescEn"></textarea></label>
+            <label>Page path <input id="projectHref"></label>
+            <label>GitHub URL optional <input id="projectGithub" placeholder="https://github.com/..."></label>
+            <div class="row">
+              <button class="primary" id="saveProject">Save project card</button>
+              <button class="danger" id="deleteProject">Delete project</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Create New Project</h2>
+            <div class="grid">
+              <label>Slug <input id="newProjectSlug" placeholder="my-project"></label>
+              <label>Title <input id="newProjectTitle" placeholder="My Project"></label>
+              <label>Meta <input id="newProjectMeta" placeholder="Simulation / implementation"></label>
+              <label>GitHub URL optional <input id="newProjectGithub" placeholder="https://github.com/..."></label>
+            </div>
+            <label>Initial text <textarea id="newProjectBody" placeholder="Write the opening text here."></textarea></label>
+            <button class="primary" id="createProject">Create project page</button>
+          </div>
+        </div>
+
+        <div id="tutorialsTab" hidden>
           <div class="panel">
             <h2>Tutorial Pages</h2>
             <label>
@@ -271,6 +321,7 @@ EDITOR_HTML = r"""<!doctype html>
             <label>Description zh <textarea id="descZh"></textarea></label>
             <label>Description en <textarea id="descEn"></textarea></label>
             <label>Page path <input id="href"></label>
+            <label>GitHub URL optional <input id="github" placeholder="https://github.com/..."></label>
             <div class="row">
               <button class="primary" id="saveTutorial">Save tutorial card</button>
               <button class="danger" id="deleteTutorial">Delete tutorial</button>
@@ -283,6 +334,7 @@ EDITOR_HTML = r"""<!doctype html>
               <label>Slug <input id="newSlug" placeholder="my-topic"></label>
               <label>Title <input id="newTitle" placeholder="My Topic"></label>
               <label>Meta <input id="newMeta" placeholder="Simulation / derivation"></label>
+              <label>GitHub URL optional <input id="newGithub" placeholder="https://github.com/..."></label>
             </div>
             <label>Initial text <textarea id="newBody" placeholder="Write the opening text here."></textarea></label>
             <button class="primary" id="createTutorial">Create page from template</button>
@@ -352,11 +404,49 @@ EDITOR_HTML = r"""<!doctype html>
         return siteData.tutorials[Number($("tutorialSelect").value)] || null;
       }
 
+      function activeProject() {
+        return siteData.projects[Number($("projectSelect").value)] || null;
+      }
+
+      function githubLink(item) {
+        return item.links?.find((link) => link.label.toLowerCase() === "github")?.href || "";
+      }
+
+      function setGithubLink(item, url) {
+        item.links = (item.links || []).filter((link) => link.label.toLowerCase() !== "github");
+        if (url.trim()) {
+          item.links.unshift({ label: "GitHub", href: url.trim() });
+        }
+        if (!item.links.length) {
+          delete item.links;
+        }
+      }
+
+      function renderProjectSelect() {
+        $("projectSelect").innerHTML = siteData.projects
+          .map((item, index) => `<option value="${index}">${localize(item.title, "en") || localize(item.title, "zh")}</option>`)
+          .join("");
+        renderProjectForm();
+      }
+
       function renderTutorialSelect() {
         $("tutorialSelect").innerHTML = siteData.tutorials
           .map((item, index) => `<option value="${index}">${localize(item.title, "en") || localize(item.title, "zh")}</option>`)
           .join("");
         renderTutorialForm();
+      }
+
+      function renderProjectForm() {
+        const item = activeProject();
+        if (!item) return;
+        $("projectTitleZh").value = localize(item.title, "zh");
+        $("projectTitleEn").value = localize(item.title, "en");
+        $("projectMetaZh").value = localize(item.meta, "zh");
+        $("projectMetaEn").value = localize(item.meta, "en");
+        $("projectDescZh").value = localize(item.description, "zh");
+        $("projectDescEn").value = localize(item.description, "en");
+        $("projectHref").value = item.href || "";
+        $("projectGithub").value = githubLink(item);
       }
 
       function renderTutorialForm() {
@@ -369,6 +459,7 @@ EDITOR_HTML = r"""<!doctype html>
         $("descZh").value = localize(item.description, "zh");
         $("descEn").value = localize(item.description, "en");
         $("href").value = item.href || "";
+        $("github").value = githubLink(item);
       }
 
       function renderFiles() {
@@ -389,6 +480,7 @@ EDITOR_HTML = r"""<!doctype html>
       async function loadAll() {
         siteData = await api("/api/data");
         files = await api("/api/files");
+        renderProjectSelect();
         renderTutorialSelect();
         renderFiles();
         renderRaw();
@@ -409,10 +501,56 @@ EDITOR_HTML = r"""<!doctype html>
 
       document.querySelectorAll("[data-tab]").forEach((button) => {
         button.addEventListener("click", () => {
-          ["tutorials", "assets", "data"].forEach((tab) => {
+          ["projects", "tutorials", "assets", "data"].forEach((tab) => {
             $(`${tab}Tab`).hidden = tab !== button.dataset.tab;
           });
         });
+      });
+
+      $("projectSelect").addEventListener("change", renderProjectForm);
+
+      $("saveProject").addEventListener("click", async () => {
+        const item = activeProject();
+        item.title = { zh: $("projectTitleZh").value, en: $("projectTitleEn").value };
+        item.meta = { zh: $("projectMetaZh").value, en: $("projectMetaEn").value };
+        item.description = { zh: $("projectDescZh").value, en: $("projectDescEn").value };
+        item.href = $("projectHref").value;
+        setGithubLink(item, $("projectGithub").value);
+        await saveData();
+        renderProjectSelect();
+      });
+
+      $("deleteProject").addEventListener("click", async () => {
+        const index = Number($("projectSelect").value);
+        const item = activeProject();
+        if (!item || !confirm(`Delete ${localize(item.title, "en")}?`)) return;
+        siteData.projects.splice(index, 1);
+        await api(`/api/page?path=${encodeURIComponent(item.href)}`, { method: "DELETE" });
+        await saveData();
+        await loadAll();
+      });
+
+      $("createProject").addEventListener("click", async () => {
+        const payload = {
+          kind: "project",
+          slug: $("newProjectSlug").value,
+          title: $("newProjectTitle").value,
+          meta: $("newProjectMeta").value,
+          body: $("newProjectBody").value,
+          github: $("newProjectGithub").value,
+        };
+        const result = await api("/api/page", {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
+        siteData.projects.push(result.card);
+        await saveData();
+        $("newProjectSlug").value = "";
+        $("newProjectTitle").value = "";
+        $("newProjectMeta").value = "";
+        $("newProjectGithub").value = "";
+        $("newProjectBody").value = "";
+        await loadAll();
       });
 
       $("saveTutorial").addEventListener("click", async () => {
@@ -421,6 +559,7 @@ EDITOR_HTML = r"""<!doctype html>
         item.meta = { zh: $("metaZh").value, en: $("metaEn").value };
         item.description = { zh: $("descZh").value, en: $("descEn").value };
         item.href = $("href").value;
+        setGithubLink(item, $("github").value);
         await saveData();
         renderTutorialSelect();
       });
@@ -437,12 +576,14 @@ EDITOR_HTML = r"""<!doctype html>
 
       $("createTutorial").addEventListener("click", async () => {
         const payload = {
+          kind: "tutorial",
           slug: $("newSlug").value,
           title: $("newTitle").value,
           meta: $("newMeta").value,
           body: $("newBody").value,
+          github: $("newGithub").value,
         };
-        const result = await api("/api/tutorial", {
+        const result = await api("/api/page", {
           method: "POST",
           body: JSON.stringify(payload),
         });
@@ -451,6 +592,7 @@ EDITOR_HTML = r"""<!doctype html>
         $("newSlug").value = "";
         $("newTitle").value = "";
         $("newMeta").value = "";
+        $("newGithub").value = "";
         $("newBody").value = "";
         await loadAll();
       });
@@ -558,23 +700,34 @@ class EditorHandler(SimpleHTTPRequestHandler):
                 write_json(self.read_body_json())
                 self.send_json({"ok": True})
                 return
-            if parsed.path == "/api/tutorial":
+            if parsed.path in {"/api/page", "/api/tutorial"}:
                 payload = self.read_body_json()
+                kind = payload.get("kind") or "tutorial"
+                if kind not in {"project", "tutorial"}:
+                    raise ValueError("Unknown page kind")
+                folder = PROJECT_DIR if kind == "project" else TUTORIAL_DIR
                 slug = slugify(payload.get("slug") or payload.get("title") or "new-page")
                 title = payload.get("title") or slug.replace("-", " ").title()
-                meta = payload.get("meta") or "Tutorial"
-                target = safe_relative_path(f"tutorials/{slug}.html", [TUTORIAL_DIR])
+                meta = payload.get("meta") or kind.title()
+                github = payload.get("github", "").strip()
+                target = safe_relative_path(f"{folder.name}/{slug}.html", [folder])
                 if target.exists():
-                    raise ValueError("Tutorial page already exists")
-                target.write_text(tutorial_template(title, meta, payload.get("body", "")), encoding="utf-8")
+                    raise ValueError("Page already exists")
+                target.write_text(page_template(title, meta, payload.get("body", ""), kind, github), encoding="utf-8")
+                card = {
+                    "title": {"zh": title, "en": title},
+                    "meta": {"zh": meta, "en": meta},
+                    "description": {
+                        "zh": f"新增的{kind}頁面。",
+                        "en": f"New {kind} page.",
+                    },
+                    "href": str(target.relative_to(ROOT)),
+                }
+                if github:
+                    card["links"] = [{"label": "GitHub", "href": github}]
                 self.send_json({
                     "href": str(target.relative_to(ROOT)),
-                    "card": {
-                        "title": {"zh": title, "en": title},
-                        "meta": {"zh": meta, "en": meta},
-                        "description": {"zh": "新增的教學頁面。", "en": "New tutorial page."},
-                        "href": str(target.relative_to(ROOT)),
-                    },
+                    "card": card,
                 })
                 return
             if parsed.path == "/api/asset":
@@ -601,9 +754,9 @@ class EditorHandler(SimpleHTTPRequestHandler):
         try:
             if parsed.path == "/api/page":
                 raw_path = query.get("path", [""])[0]
-                if not raw_path or raw_path == "tutorials/_template.html":
+                if not raw_path or raw_path in {"tutorials/_template.html", "projects/_template.html"}:
                     raise ValueError("Refusing to delete this page")
-                target = safe_relative_path(raw_path, [TUTORIAL_DIR])
+                target = safe_relative_path(raw_path, [TUTORIAL_DIR, PROJECT_DIR])
                 if target.exists():
                     target.unlink()
                 self.send_json({"ok": True})

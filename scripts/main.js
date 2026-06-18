@@ -53,11 +53,22 @@ function translatePage() {
 }
 
 function createItemCard(item) {
-  const card = document.createElement(item.href ? "a" : "article");
+  const card = document.createElement("article");
   card.className = item.href ? "item-card item-card-link" : "item-card";
 
   if (item.href) {
-    card.href = item.href;
+    card.dataset.href = item.href;
+    card.tabIndex = 0;
+    card.setAttribute("role", "link");
+    card.addEventListener("click", (event) => {
+      if (event.target.closest("a")) return;
+      window.location.href = item.href;
+    });
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        window.location.href = item.href;
+      }
+    });
   }
 
   const content = document.createElement("div");
@@ -91,7 +102,9 @@ function createItemCard(item) {
     });
 
     card.append(links);
-  } else if (item.href) {
+  }
+
+  if (item.href) {
     const cue = document.createElement("span");
     cue.className = "item-cue";
     cue.textContent = currentLanguage === "zh" ? "閱讀" : "Read";

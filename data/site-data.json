@@ -13,14 +13,14 @@
       "nav.contact": "Contact",
       "language.label": "語言切換",
       "hero.eyebrow": "Personal academic portfolio",
-      "hero.subtitle": "通訊工程與訊號處理碩士生",
+      "hero.subtitle": "臺灣大學電信工程學研究所碩士生，物理學系背景",
       "hero.text": "這裡整理我的研究方向、專案紀錄、發表與經歷。網站以免費靜態架構維護，之後可以逐步加入 CV、論文頁面或部落格。",
       "hero.actionsLabel": "快速連結",
       "hero.visualLabel": "訊號處理視覺化",
       "about.eyebrow": "About",
       "about.title": "關於我",
-      "about.body1": "我目前專注於通訊工程、訊號處理與陣列設計相關主題，並持續整理研究、模擬與工程實作中的筆記與成果。",
-      "about.body2": "網站設計保持簡潔、可讀、容易維護，適合放在履歷、GitHub profile、論文 project page 或申請資料中。",
+      "about.body1": "我畢業於臺灣大學物理學系，目前就讀臺灣大學電信工程學研究所，專注於通訊工程、訊號處理與陣列設計相關主題。",
+      "about.body2": "這個網站整理我的研究、模擬、工程實作、教學筆記與專案成果，並保持簡潔、可讀、容易維護。",
       "experience.eyebrow": "Experience",
       "experience.title": "經歷",
       "experience.timelineLabel": "經歷時間軸",
@@ -58,14 +58,14 @@
       "nav.contact": "Contact",
       "language.label": "Language switcher",
       "hero.eyebrow": "Personal academic portfolio",
-      "hero.subtitle": "Master's student in Communication Engineering and Signal Processing.",
+      "hero.subtitle": "Master's student at the NTU Graduate Institute of Communication Engineering, with a background in Physics.",
       "hero.text": "This site collects my research interests, project notes, publications, and experience. It is maintained as a free static website and can later grow into a CV, paper pages, or a blog.",
       "hero.actionsLabel": "Quick links",
       "hero.visualLabel": "Signal processing visualization",
       "about.eyebrow": "About",
       "about.title": "About Me",
-      "about.body1": "I focus on communication engineering, signal processing, and array design, while documenting research notes, simulations, and engineering work.",
-      "about.body2": "The site is designed to stay clean, readable, and easy to maintain for CVs, GitHub profiles, project pages, and application materials.",
+      "about.body1": "I studied Physics at National Taiwan University and am currently a master's student at the NTU Graduate Institute of Communication Engineering, focusing on communication engineering, signal processing, and array design.",
+      "about.body2": "This site collects my research, simulations, engineering work, tutorial notes, and project outcomes while staying clean, readable, and easy to maintain.",
       "experience.eyebrow": "Experience",
       "experience.title": "Experience",
       "experience.timelineLabel": "Experience timeline",
@@ -110,7 +110,8 @@
           "label": "Code",
           "href": "https://github.com/cat610933"
         }
-      ]
+      ],
+      "href": "projects/sparse-array-optimization.html"
     },
     {
       "title": {
@@ -124,7 +125,9 @@
       "description": {
         "zh": "通道模型、系統設定與通訊效能分析相關的模擬工作。",
         "en": "Simulation work for channel modeling, system settings, and communication performance analysis."
-      }
+      },
+      "href": "projects/wireless-communication-simulation.html",
+      "links": []
     },
     {
       "title": {
@@ -144,7 +147,8 @@
           "label": "GitHub",
           "href": "https://github.com/cat610933"
         }
-      ]
+      ],
+      "href": "projects/matlab-python-tools.html"
     }
   ],
   "tutorials": [
