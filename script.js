@@ -1,20 +1,19 @@
 const projects = [
   {
-    title: "GBOA-SC array optimization",
+    title: "Sparse array optimization",
     meta: "Research project",
     description:
-      "Placeholder for sparse array optimization notes, simulations, and result summaries.",
+      "Research notes and simulations related to sparse array design and performance evaluation.",
     links: [{ label: "Code", href: "https://github.com/cat610933" }],
   },
   {
-    title: "5G link-level simulation",
+    title: "Wireless communication simulation",
     meta: "Wireless communications",
     description:
-      "Placeholder for channel modeling, simulation settings, and performance evaluation.",
-    links: [{ label: "Details", href: "#" }],
+      "Simulation work for channel modeling, system settings, and communication performance analysis.",
   },
   {
-    title: "MATLAB / Python tools",
+    title: "MATLAB and Python tools",
     meta: "Engineering utilities",
     description:
       "Small scripts and notebooks for experiments, figures, and reproducible analysis.",
@@ -22,18 +21,7 @@ const projects = [
   },
 ];
 
-const publications = [
-  {
-    title: "Publication title placeholder",
-    meta: "Authors - Venue - Year",
-    description:
-      "Add abstract, paper link, code link, or project page here when the publication is ready.",
-    links: [
-      { label: "Paper", href: "#" },
-      { label: "Code", href: "#" },
-    ],
-  },
-];
+const publications = [];
 
 function createItemCard(item) {
   const article = document.createElement("article");

@@ -336,6 +336,10 @@ h3 {
   font-size: 0.92rem;
 }
 
+.is-hidden {
+  display: none;
+}
+
 @media (max-width: 860px) {
   .site-header {
     position: static;
