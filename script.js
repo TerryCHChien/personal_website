@@ -24,16 +24,24 @@ const projects = [
 const publications = [
   {
     title:
-      "Atomic excitation delocalization at the clean to disordered interface in a chirally-coupled atomic array",
-    meta: "Physical Review Research 6 (1), 013159 - 2024",
-    description:
-      "CC Wu, KT Lin, I Handayana, CH Chien, S Goswami, GD Lin, YC Chen, ...",
-  },
-  {
-    title:
       "Generating scalable graph states in an atom-nanophotonic interface",
     meta: "Quantum Science and Technology 9 (2), 025020 - 2024",
     description: "CH Chien, S Goswami, CC Wu, WS Hiew, YC Chen, HH Jen",
+    links: [
+      { label: "DOI", href: "https://doi.org/10.1088/2058-9565/ad33ad" },
+      { label: "arXiv", href: "https://arxiv.org/abs/2310.03990" },
+    ],
+  },
+  {
+    title:
+      "Efficient and high-fidelity entanglement in cavity QED without high cooperativity",
+    meta: "Physical Review Letters 136, 050802 - 2026",
+    description:
+      "S Goswami, CH Chien, N Sinclair, B Grinkemeyer, S Bennetts, YC Chen, HH Jen",
+    links: [
+      { label: "DOI", href: "https://doi.org/10.1103/n9wg-k6q9" },
+      { label: "arXiv", href: "https://arxiv.org/abs/2505.02702" },
+    ],
   },
 ];
 
