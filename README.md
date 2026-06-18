@@ -6,7 +6,10 @@
 
 - `index.html`：網站主要內容與區塊
 - `styles.css`：版面、顏色、響應式設計
-- `script.js`：專案與發表資料、首頁視覺化 canvas
+- `scripts/site-data.js`：中英文文案、專案、教學筆記、論文資料
+- `scripts/main.js`：語言切換、卡片 render、首頁視覺化 canvas
+- `tutorials/`：教學筆記與文章頁面
+- `assets/`：之後放 code、圖片、公式等可被頁面 include 的檔案
 - `codex可以讀的說明`：網站建置方向與給 Codex 的需求說明
 
 ## 本機預覽
@@ -30,10 +33,12 @@ http://localhost:8080
 常改的位置：
 
 - 在 `index.html` 修改姓名、About、Experience、Research、Contact 文字。
-- 在 `script.js` 的 `projects` 陣列修改專案卡片。
-- 在 `script.js` 的 `tutorials` 陣列修改教學筆記卡片。
-- 在 `script.js` 的 `publications` 陣列修改論文與發表。
-- 中英文切換文字主要在 `script.js` 的 `translations` 物件裡修改。
+- 在 `scripts/site-data.js` 的 `projects` 陣列修改專案卡片。
+- 在 `scripts/site-data.js` 的 `tutorials` 陣列修改教學筆記卡片。卡片有 `href` 時，整張卡片會可以點。
+- 在 `scripts/site-data.js` 的 `publications` 陣列修改論文與發表。
+- 中英文切換文字主要在 `scripts/site-data.js` 的 `translations` 物件裡修改。
+- 新增 tutorial 頁面時，建議放在 `tutorials/`，並在 `scripts/site-data.js` 的 `tutorials` 陣列加入連結。
+- code、圖片、公式等素材可分別放在 `assets/code/`、`assets/images/`、`assets/formulas/`。
 - 如果要公開 email，可以在 `index.html` 的 Contact 區塊加入 `mailto:` 連結。
 - 如果之後有 CV PDF，可以放到 repo 裡，例如 `assets/cv.pdf`，再把 CV 按鈕連到該檔案。
 
